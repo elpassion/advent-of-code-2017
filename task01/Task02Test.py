@@ -19,6 +19,10 @@ class Task01Test(unittest.TestCase):
         self.input = "1221"
         self.assertEqual(0, sumOfMatchingHalfwayAround(self.input))
 
+    def test_single_match_beginning_with_end(self):
+        self.input = "123425"
+        self.assertEqual(4, sumOfMatchingHalfwayAround(self.input))
+
 
 if __name__ == '__main__':
     unittest.main()
