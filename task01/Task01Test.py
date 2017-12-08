@@ -24,5 +24,10 @@ class Task01Test(unittest.TestCase):
         self.input = "1234"
         self.assertEqual(0, sumOfMatchingFollowers(self.input))
 
+    def test_only_first_and_last(self):
+        self.input = "91212129"
+        self.assertEqual(9, sumOfMatchingFollowers(self.input))
+
+
 if __name__ == '__main__':
     unittest.main()
