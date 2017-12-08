@@ -12,9 +12,6 @@ def sumOfMatchingFollowers(input):
 
 
 class Task01Test(unittest.TestCase):
-    def setUp(self):
-        self.seq = range(10)
-
     def test_sample_case(self):
         self.input = "1122"
         self.assertEqual(3, sumOfMatchingFollowers(self.input))
@@ -23,6 +20,9 @@ class Task01Test(unittest.TestCase):
         self.input = "1111"
         self.assertEqual(4, sumOfMatchingFollowers(self.input))
 
+    def test_zero_matches(self):
+        self.input = "1234"
+        self.assertEqual(0, sumOfMatchingFollowers(self.input))
 
 if __name__ == '__main__':
     unittest.main()
