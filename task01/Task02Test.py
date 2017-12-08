@@ -27,6 +27,10 @@ class Task01Test(unittest.TestCase):
         self.input = "123123"
         self.assertEqual(12, sumOfMatchingHalfwayAround(self.input))
 
+    def test_big_list_matches(self):
+        self.input = "12131415"
+        self.assertEqual(4, sumOfMatchingHalfwayAround(self.input))
+
 
 if __name__ == '__main__':
     unittest.main()
