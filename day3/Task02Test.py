@@ -29,7 +29,6 @@ def create_spiral_sum_matrix(until):
     fill_matrix_with_zeros(matrix)
 
     matrix[(0, 0)] = 1
-    matrix[(1, 0)] = 1
     depth = 1
     while True:
         finish = False
