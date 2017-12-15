@@ -38,16 +38,15 @@ def create_spiral_sum_matrix(finish_predicate):
         finish = create_edge(depth, matrix, lambda var: (- depth, depth - var), finish_predicate)
         if finish:
             break
-
-        cords_creator = lambda var: (var - depth, - depth)
-        finish = create_edge(depth, matrix, cords_creator, finish_predicate)
-
-        cords = cords_creator(depth * 2 + 1)
-        matrix[cords] = sum_of_neighbours(matrix, cords)
-
-        depth += 1
+        finish = create_edge(depth, matrix, lambda var: (var - depth, - depth), finish_predicate)
         if finish:
             break
+
+        sum = sum_of_neighbours(matrix, (depth + 1, - depth))
+        if finish_predicate(sum):
+            break
+        matrix[(depth + 1, - depth)] = sum
+        depth += 1
     return matrix
 
 
