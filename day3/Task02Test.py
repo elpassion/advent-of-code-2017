@@ -29,36 +29,37 @@ def create_spiral_sum_matrix(until):
     fill_matrix_with_zeros(matrix)
 
     matrix[(0, 0)] = 1
+    matrix[(1, 0)] = 1
     depth = 1
     while True:
         finish = False
-        for yr in range(0, depth + 1):
-            sum = sum_of_neighbours(matrix, depth, yr)
+        for yr in range(1, depth * 2 + 1):
+            sum = sum_of_neighbours(matrix, depth, yr - depth)
             if sum > until:
                 print(sum)
                 finish = True
-            matrix[(depth, yr)] = sum
+            matrix[(depth, yr - depth)] = sum
 
-        for xt in range(0, depth + 2):
+        for xt in range(1, 1 + depth * 2):
             sum = sum_of_neighbours(matrix, depth - xt, depth)
             if sum > until:
                 print(sum)
                 finish = True
-            matrix[(depth - xt,depth)] = sum
+            matrix[(depth - xt, depth)] = sum
 
-        for yl in range(0, depth + 2):
+        for yl in range(1, depth * 2 + 1):
             sum = sum_of_neighbours(matrix, - depth, depth - yl)
             if sum > until:
                 print(sum)
                 finish = True
             matrix[(- depth, depth - yl)] = sum
 
-        for xb in range(0, depth + 2):
-            sum = sum_of_neighbours(matrix, xb, - depth)
+        for xb in range(1, depth * 2 + 2):
+            sum = sum_of_neighbours(matrix, xb - depth, - depth)
             if sum > until:
                 print(sum)
                 finish = True
-            matrix[(xb, - depth)] = sum
+            matrix[(xb - depth, - depth)] = sum
 
         depth += 1
         if finish:
