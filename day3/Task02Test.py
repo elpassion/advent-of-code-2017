@@ -26,8 +26,6 @@ if __name__ == '__main__':
 
 def create_spiral_sum_matrix(until):
     matrix = dict()
-    fill_matrix_with_zeros(matrix)
-
     matrix[(0, 0)] = 1
     depth = 1
     while True:
@@ -65,14 +63,7 @@ def create_spiral_sum_matrix(until):
             break
     return matrix
 
-
-def fill_matrix_with_zeros(a):
-    for i in range(-10, 10):
-        for j in range(-10, 10):
-            a[(i, j)] = 0
-
-
 def sum_of_neighbours(a, x, y):
-    return a[(x - 1, y)] + a[(x + 1, y)] + a[(x, y - 1)] + \
-           a[(x, y + 1)] + a[(x - 1, y - 1)] + a[(x + 1, y + 1)] + \
-           a[(x + 1, y - 1)] + a[(x - 1, y + 1)]
+    return a.get((x - 1, y), 0) + a.get((x + 1, y), 0) + a.get((x, y - 1), 0) + \
+           a.get((x, y + 1), 0) + a.get((x - 1, y - 1), 0) + a.get((x + 1, y + 1), 0) + \
+           a.get((x + 1, y - 1), 0) + a.get((x - 1, y + 1), 0)
