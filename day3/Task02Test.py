@@ -4,7 +4,7 @@ import unittest
 class Task02Test(unittest.TestCase):
 
     def test_spriale_matrix(self):
-        map = create_spiral_sum_matrix(325489)
+        map = create_spiral_sum_matrix(lambda x: x > 325489)
         self.assertEqual(1, map[(0, 0)])
         self.assertEqual(1, map[(1, 0)])
         self.assertEqual(2, map[(1, 1)])
@@ -24,46 +24,47 @@ if __name__ == '__main__':
     unittest.main()
 
 
-def create_spiral_sum_matrix(until):
+def create_spiral_sum_matrix(finish_predicate):
     matrix = dict()
     matrix[(0, 0)] = 1
     depth = 1
     while True:
-        finish = False
-        for yr in range(1, depth * 2 + 1):
-            sum = sum_of_neighbours(matrix, depth, yr - depth)
-            if sum > until:
-                print(sum)
-                finish = True
-            matrix[(depth, yr - depth)] = sum
+        finish = create_edge(depth, matrix, lambda var: (depth, var - depth), finish_predicate)
+        if finish:
+            break
+        finish = create_edge(depth, matrix, lambda var: (depth - var, depth), finish_predicate)
+        if finish:
+            break
+        finish = create_edge(depth, matrix, lambda var: (- depth, depth - var), finish_predicate)
+        if finish:
+            break
 
-        for xt in range(1, 1 + depth * 2):
-            sum = sum_of_neighbours(matrix, depth - xt, depth)
-            if sum > until:
-                print(sum)
-                finish = True
-            matrix[(depth - xt, depth)] = sum
+        cords_creator = lambda var: (var - depth, - depth)
+        finish = create_edge(depth, matrix, cords_creator, finish_predicate)
 
-        for yl in range(1, depth * 2 + 1):
-            sum = sum_of_neighbours(matrix, - depth, depth - yl)
-            if sum > until:
-                print(sum)
-                finish = True
-            matrix[(- depth, depth - yl)] = sum
-
-        for xb in range(1, depth * 2 + 2):
-            sum = sum_of_neighbours(matrix, xb - depth, - depth)
-            if sum > until:
-                print(sum)
-                finish = True
-            matrix[(xb - depth, - depth)] = sum
+        cords = cords_creator(depth * 2 + 1)
+        matrix[cords] = sum_of_neighbours(matrix, cords)
 
         depth += 1
         if finish:
             break
     return matrix
 
-def sum_of_neighbours(a, x, y):
+
+def create_edge(depth, matrix, cords_creator, predicate):
+    finish = False
+    for variable in range(1, depth * 2 + 1):
+        sum = sum_of_neighbours(matrix, cords_creator(variable))
+        if predicate(sum):
+            print(sum)
+            finish = True
+            break
+        matrix[cords_creator(variable)] = sum
+    return finish
+
+
+def sum_of_neighbours(a, pair):
+    x, y = pair
     return a.get((x - 1, y), 0) + a.get((x + 1, y), 0) + a.get((x, y - 1), 0) + \
            a.get((x, y + 1), 0) + a.get((x - 1, y - 1), 0) + a.get((x + 1, y + 1), 0) + \
            a.get((x + 1, y - 1), 0) + a.get((x - 1, y + 1), 0)
