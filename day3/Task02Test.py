@@ -4,7 +4,7 @@ import unittest
 class Task02Test(unittest.TestCase):
 
     def test_spriale_matrix(self):
-        map = create_spiral_sum_matrix()
+        map = create_spiral_sum_matrix(325489)
         self.assertEqual(1, map[(0, 0)])
         self.assertEqual(1, map[(1, 0)])
         self.assertEqual(2, map[(1, 1)])
@@ -17,40 +17,62 @@ class Task02Test(unittest.TestCase):
         self.assertEqual(26, map[(2, -1)])
         self.assertEqual(54, map[(2, 0)])
         self.assertEqual(57, map[(2, 1)])
+        self.assertEqual(147, map[(-2, 2)])
 
 
 if __name__ == '__main__':
     unittest.main()
 
 
-def create_spiral_sum_matrix():
-    a = dict()
-    for i in range(-100, 100):
-        for j in range(-100, 100):
-            a[(i, j)] = 0
+def create_spiral_sum_matrix(until):
+    matrix = dict()
+    fill_matrix_with_zeros(matrix)
 
-    a[(0, 0)] = 1
-    a[(1, 0)] = 1
+    matrix[(0, 0)] = 1
     depth = 1
     while True:
+        finish = False
         for yr in range(0, depth + 1):
-            a[(depth, yr)] = sum_of_neighbours(a, depth, yr)
+            sum = sum_of_neighbours(matrix, depth, yr)
+            if sum > until:
+                print(sum)
+                finish = True
+            matrix[(depth, yr)] = sum
 
         for xt in range(0, depth + 2):
-            a[(depth - xt, + depth)] = sum_of_neighbours(a, depth - xt, depth)
+            sum = sum_of_neighbours(matrix, depth - xt, depth)
+            if sum > until:
+                print(sum)
+                finish = True
+            matrix[(depth - xt,depth)] = sum
 
         for yl in range(0, depth + 2):
-            a[(- depth, depth - yl)] = sum_of_neighbours(a, - depth, depth - yl)
+            sum = sum_of_neighbours(matrix, - depth, depth - yl)
+            if sum > until:
+                print(sum)
+                finish = True
+            matrix[(- depth, depth - yl)] = sum
 
         for xb in range(0, depth + 2):
-            a[(xb, - depth)] = sum_of_neighbours(a, xb, - depth)
+            sum = sum_of_neighbours(matrix, xb, - depth)
+            if sum > until:
+                print(sum)
+                finish = True
+            matrix[(xb, - depth)] = sum
+
         depth += 1
-        if depth == 4:
+        if finish:
             break
-    return a
+    return matrix
+
+
+def fill_matrix_with_zeros(a):
+    for i in range(-10, 10):
+        for j in range(-10, 10):
+            a[(i, j)] = 0
 
 
 def sum_of_neighbours(a, x, y):
-    return a[(x - 1, y)] + a[(x + 1, y)] + a[(x, y - 1)] +\
+    return a[(x - 1, y)] + a[(x + 1, y)] + a[(x, y - 1)] + \
            a[(x, y + 1)] + a[(x - 1, y - 1)] + a[(x + 1, y + 1)] + \
            a[(x + 1, y - 1)] + a[(x - 1, y + 1)]
