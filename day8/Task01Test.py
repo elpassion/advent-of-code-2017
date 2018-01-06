@@ -50,12 +50,16 @@ class Task01Test(unittest.TestCase):
         registers = dict()
         with open("input.txt") as f:
             input = f.readlines()
+        max_value = 0
         for line in input:
             parsed = parse(line)
-            result = evalute_condition(registers, parsed)
-            if result:
-                execute(registers, parsed)
+            condition_result = evalute_condition(registers, parsed)
+            if condition_result:
+                execute_result = execute(registers, parsed)
+                if execute_result > max_value:
+                    max_value = execute_result
         print(max(registers.values()))
+        print(max_value)
 
 
 def parse(line):
@@ -79,7 +83,7 @@ def execute(registers, execution_info):
     else:
         register_value -= int(execution_info['operation_value'])
     registers[register] = register_value
-    return registers
+    return register_value
 
 
 def evalute_condition(registers, execution_info):
