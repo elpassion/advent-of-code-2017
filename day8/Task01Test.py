@@ -46,6 +46,17 @@ class Task01Test(unittest.TestCase):
         result = evalute_condition(registers, execution_info)
         self.assertTrue(result)
 
+    def test_evaluate_input(self):
+        registers = dict()
+        with open("input.txt") as f:
+            input = f.readlines()
+        for line in input:
+            parsed = parse(line)
+            result = evalute_condition(registers, parsed)
+            if result:
+                execute(registers, parsed)
+        print(max(registers.values()))
+
 
 def parse(line):
     parsed_line = re.search("([a-z]+) (inc|dec) (-?\d+) if ([a-z]+) (>|<|!=|==|>=|<=) (-?\d+)", line)
